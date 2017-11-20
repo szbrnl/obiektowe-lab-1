@@ -1,3 +1,5 @@
+package agh.cs.lab;
+
 import agh.cs.lab.Car;
 import agh.cs.lab.Position;
 import agh.cs.lab.RectangularMap;

@@ -9,23 +9,28 @@ import java.util.List;
 public class    CarSystem {
     public static void main(String args[]) {
 
-        String[] s = {"f", "b", "r", "l" ,"f", "f", "r", "r", "f", "f", "f", "f", "f", "f", "f", "f"};
+        try {
 
-        MoveDirection[] directions = new OptionsParser().parse(s);
+            String[] s = {"f", "b", "r", "l", "f", "f", "r", "r", "f", "f", "f", "f", "f", "f", "f", "f"};
 
-        List<HayStack> hayStacks = new ArrayList<HayStack>();
+            MoveDirection[] directions = new OptionsParser().parse(s);
 
-        hayStacks.add(new HayStack(new Position(-4,-4)));
-        hayStacks.add(new HayStack(new Position(7,7)));
-        hayStacks.add(new HayStack(new Position(3,6)));
-        hayStacks.add(new HayStack(new Position(2,0)));
+            List<HayStack> hayStacks = new ArrayList<HayStack>();
 
-        IWorldMap map = new UnboundedMap(hayStacks);
-        map.place(new Car(map));
-        map.place(new Car(map,3,4));
-        map.run(directions);
+            hayStacks.add(new HayStack(new Position(-4, -4)));
+            hayStacks.add(new HayStack(new Position(7, 7)));
+            hayStacks.add(new HayStack(new Position(3, 6)));
+            hayStacks.add(new HayStack(new Position(2, 0)));
 
-        System.out.println(map.toString());
+            IWorldMap map = new UnboundedMap(hayStacks);
+            map.place(new Car(map));
+            map.place(new Car(map, 3, 4));
+            map.run(directions);
 
+            System.out.println(map.toString());
+        }
+        catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 }

@@ -30,8 +30,8 @@ public class UnboundedMap implements IWorldMap {
 
     @Override
     public boolean place(Car car) {
-        if(isOccupied(car.getPosition())) return false;
-
+        if(isOccupied(car.getPosition()))
+            throw new IllegalArgumentException(car.getPosition().toString() + "is occupied");
 
         cars.add(car);
         return true;

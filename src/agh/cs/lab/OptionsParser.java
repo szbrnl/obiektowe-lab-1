@@ -24,6 +24,7 @@ public class OptionsParser {
                 dirs[newSize] = MoveDirection.Left;
                 newSize++;
             }
+            else throw new IllegalArgumentException(s + " is not legal move specification");
 
         }
 
