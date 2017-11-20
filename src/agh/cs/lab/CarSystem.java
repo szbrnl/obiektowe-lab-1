@@ -29,7 +29,7 @@ public class    CarSystem {
 
             System.out.println(map.toString());
         }
-        catch (Exception ex) {
+        catch (IllegalArgumentException ex) {
             System.out.println(ex.getMessage());
         }
     }

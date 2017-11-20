@@ -1,7 +1,8 @@
 package agh.cs.lab;
 
-import java.util.ArrayList;
-import java.util.List;
+import javafx.geometry.Pos;
+
+import java.util.*;
 
 /**
  * Created by Student11 on 2017-11-07.
@@ -11,11 +12,18 @@ public abstract class AbstractWorldMap implements IWorldMap {
     protected List<HayStack> hayStacks = new ArrayList<HayStack>();
     protected List<Car> cars = new ArrayList<Car>();
 
+
+    protected Map mCars = new LinkedHashMap<Position, Car>();
+
+
+
     @Override
     public Object objectAt(Position position) {
-        for(Car car : cars) {
-            if(position.equals(car.getPosition())) return car;
+
+        if(mCars.containsKey(position)) {
+            return mCars.get(position);
         }
+
         for(HayStack hayStack : hayStacks) {
             if(position.equals(hayStack.getPosition())) return hayStack;
         }
@@ -24,9 +32,10 @@ public abstract class AbstractWorldMap implements IWorldMap {
 
     @Override
     public boolean isOccupied(Position position) {
-        for(Car car : cars) {
-            if(position.equals(car.getPosition())) return true;
-        }
+
+        if(mCars.containsKey(position))
+            return true;
+
         for(HayStack hayStack : hayStacks) {
             if(position.equals(hayStack.getPosition())) return true;
         }
@@ -36,14 +45,26 @@ public abstract class AbstractWorldMap implements IWorldMap {
 
     @Override
     public void run(MoveDirection[] directions) {
-        if(cars.size() == 0) return;
+        if(mCars.isEmpty()) return;
 
-        int car = 0;
+        int currentCarNumber = 0;
+        Collection cars = mCars.values();
+        Object[] carList = cars.toArray();
 
         for(MoveDirection dir : directions) {
-            Car currentCar = cars.get(car % cars.size());
+
+            Car currentCar = (Car)carList[currentCarNumber % carList.length];
+            Position previousPosition = currentCar.getPosition();
+
             currentCar.move(dir);
-            car++;
+
+            if(currentCar.getPosition() != previousPosition) {
+                mCars.remove(previousPosition);
+                mCars.put(currentCar.getPosition(), currentCar);
+            }
+
+
+            currentCarNumber++;
         }
     }
 
