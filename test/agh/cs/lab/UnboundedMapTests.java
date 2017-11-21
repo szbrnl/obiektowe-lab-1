@@ -1,8 +1,8 @@
 package agh.cs.lab;
 
 import com.sun.nio.sctp.IllegalReceiveException;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+
+import org.junit.Test;
 import org.testng.Assert;
 
 import javax.swing.text.html.Option;

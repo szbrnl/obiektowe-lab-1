@@ -11,19 +11,16 @@ public class UnboundedMap extends AbstractWorldMap {
 
 
     public UnboundedMap(List<HayStack> hayStacks) {
-        this.hayStacks = hayStacks;
+       for(HayStack hayStack : hayStacks) {
+           mElements.put(hayStack.getPosition(), hayStack);
+       }
+
     }
 
     @Override
     public boolean canMoveTo(Position position) {
 
-        if(mCars.get(position) != null) return false;
-
-
-        for(HayStack hayStack : hayStacks) {
-            if(position.equals(hayStack.getPosition())) return false;
-        }
-
+        if(mElements.get(position) != null) return false;
         return true;
     }
 
@@ -32,34 +29,30 @@ public class UnboundedMap extends AbstractWorldMap {
         if(isOccupied(car.getPosition()))
             throw new IllegalArgumentException(car.getPosition().toString() + "is occupied");
 
-        mCars.put(car.getPosition(), car);
+        mElements.put(car.getPosition(), car);
+        cars.add(car);
+
+        car.addObserver(this);
+
         return true;
     }
 
     public String toString() {
         MapVisualizer mapVisualizer = new MapVisualizer();
 
-        Collection cars = mCars.values();
-        Object[] carList = cars.toArray();
+        Collection elements = mElements.values();
+        Object[] elementsArray = elements.toArray();
 
-        Position topRight = ((Car)(carList[0])).getPosition();
-        Position bottomLeft = ((Car)carList[0]).getPosition();
+        Position topRight = ((AbstractMapElement)elementsArray[0]).getPosition();
+        Position bottomLeft = ((AbstractMapElement)elementsArray[0]).getPosition();
 
-        for(Object oCar : carList) {
-            Car car = (Car) oCar;
-            if(car.getPosition().x > topRight.x) topRight = new Position(car.getPosition().x, topRight.y);
-            if(car.getPosition().y > topRight.y) topRight = new Position(topRight.x, car.getPosition().y);
+        for(Object oElem : elementsArray) {
+            AbstractMapElement elem = (AbstractMapElement)oElem;
+            if(elem.getPosition().x > topRight.x) topRight = new Position(elem.getPosition().x, topRight.y);
+            if(elem.getPosition().y > topRight.y) topRight = new Position(topRight.x, elem.getPosition().y);
 
-            if(car.getPosition().x < bottomLeft.x) bottomLeft = new Position(car.getPosition().x, bottomLeft.y);
-            if(car.getPosition().y < bottomLeft.y) bottomLeft = new Position(bottomLeft.x, car.getPosition().y);
-        }
-
-        for(HayStack hayStack : hayStacks) {
-            if(hayStack.getPosition().x > topRight.x) topRight = new Position(hayStack.getPosition().x, topRight.y);
-            if(hayStack.getPosition().y > topRight.y) topRight = new Position(topRight.x, hayStack.getPosition().y);
-
-            if(hayStack.getPosition().x < bottomLeft.x) bottomLeft = new Position(hayStack.getPosition().x, bottomLeft.y);
-            if(hayStack.getPosition().y < bottomLeft.y) bottomLeft = new Position(bottomLeft.x, hayStack.getPosition().y);
+            if(elem.getPosition().x < bottomLeft.x) bottomLeft = new Position(elem.getPosition().x, bottomLeft.y);
+            if(elem.getPosition().y < bottomLeft.y) bottomLeft = new Position(bottomLeft.x, elem.getPosition().y);
         }
 
         return mapVisualizer.dump(this, bottomLeft, topRight);
