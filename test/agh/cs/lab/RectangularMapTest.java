@@ -3,9 +3,14 @@ package agh.cs.lab;
 import agh.cs.lab.Car;
 import agh.cs.lab.Position;
 import agh.cs.lab.RectangularMap;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
+import static junit.framework.TestCase.assertNotNull;
+
+import static org.testng.AssertJUnit.assertEquals;
 
 
 /**

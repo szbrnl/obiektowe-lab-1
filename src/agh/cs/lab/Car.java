@@ -1,5 +1,7 @@
 package agh.cs.lab;
 
+import java.util.*;
+
 /**
  * Created by student40 on 2017-10-24.
  */
@@ -7,6 +9,10 @@ public class Car extends AbstractMapElement{
 
     private MapDirection mapDirection;
 
+    //Lista obserwatorow
+    private List<IPositionChangeObserver> positionChangeObservers = new ArrayList<IPositionChangeObserver>();
+
+    //private Map _positionChangedObservers = new HashMap<Integer, IPositionChangeObserver>();
 
     private IWorldMap map;
 
@@ -24,11 +30,25 @@ public class Car extends AbstractMapElement{
         this.map = map;
     }
 
+    private void positionChanged(Position old) {
+        for(IPositionChangeObserver observer : positionChangeObservers) {
+            observer.positionChanged(old, this.position);
+        }
+    }
 
+    public void addObserver(IPositionChangeObserver observer) {
+        positionChangeObservers.add(observer);
+    }
+
+    public void removeObserver(IPositionChangeObserver observer){
+        positionChangeObservers.remove(observer);
+    }
 
     public void move(MoveDirection moveDirection) {
 
-        Position pos;
+        Position pos, oldPosition;
+
+        oldPosition = this.position;
 
         if (moveDirection == MoveDirection.Right)
             mapDirection = mapDirection.next();
@@ -69,6 +89,7 @@ public class Car extends AbstractMapElement{
             if(!map.canMoveTo(pos)) return;
 
             position = pos;
+            positionChanged(oldPosition);
         }
     }
 

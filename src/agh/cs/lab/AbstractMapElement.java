@@ -6,8 +6,6 @@ public class AbstractMapElement {
 
     public Position getPosition() {return position;}
 
-
-
 }
 
 
